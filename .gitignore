@@ -57,3 +57,8 @@ test_logs/
 # Temporary files
 *.tmp
 *.temp
+
+# --- Release artifacts (allowed to be committed) ---
+# Keep ignoring all JARs by default, but allow release JARs
+!release/
+!release/**/*.jar
