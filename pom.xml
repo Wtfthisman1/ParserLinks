@@ -154,7 +154,8 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>fat</shadedClassifierName>
                             <minimizeJar>false</minimizeJar>
                             <filters>
                                 <filter>
@@ -163,6 +164,35 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/*.EC</exclude>
+                                        <exclude>META-INF/maven/**</exclude>
+                                        <exclude>META-INF/versions/**</exclude>
+                                        <exclude>META-INF/io.netty.versions.properties</exclude>
+                                        <exclude>META-INF/LICENSE*</exclude>
+                                        <exclude>META-INF/NOTICE*</exclude>
+                                        <exclude>META-INF/DEPENDENCIES</exclude>
+                                        <exclude>META-INF/okio.kotlin_module</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                    </excludes>
+                                </filter>
+                                <!-- Исключаем дублирующиеся нативные библиотеки для разных ОС -->
+                                <filter>
+                                    <artifact>io.netty:netty-transport-native-kqueue</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/native/libnetty_transport_native_kqueue_*.jnilib</exclude>
+                                        <exclude>META-INF/native/libnetty_transport_native_kqueue_*.so</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.netty:netty-transport-native-epoll</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/native/libnetty_transport_native_epoll_*.so</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.netty:netty-resolver-dns-native-macos</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/native/libnetty_resolver_dns_native_macos_*.jnilib</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -171,11 +201,19 @@
                                     <mainClass>com.parser.Main</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
                             </transformers>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
