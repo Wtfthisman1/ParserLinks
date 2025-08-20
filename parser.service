@@ -1,0 +1,19 @@
+[Unit]
+Description=Image Parser Service
+After=network.target
+
+[Service]
+Type=simple
+User=isaak
+WorkingDirectory=/home/isaak/IdeaProjects/ParserLinks
+ExecStart=/usr/bin/java -jar target/image-parser-1.0.0.jar continuous gekkk
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
+
+

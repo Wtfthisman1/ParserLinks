@@ -1,0 +1,86 @@
+# Конфигурация парсера фотохостингов
+parser:
+  # Настройки производительности
+  maxConcurrentRequests: 1000
+  requestTimeoutSeconds: 10
+  retryAttempts: 3
+  retryDelayMs: 2000
+  
+  # Rate limiting
+  rateLimiting:
+    requestsPerSecond: 500
+    burstSize: 100
+  
+  # Настройки для имитации человеческого поведения
+  humanBehavior:
+    minDelayBetweenRequestsMs: 500
+    maxDelayBetweenRequestsMs: 3000
+    userAgents:
+      - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      - "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      - "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0"
+      - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/121.0"
+  
+  # Настройки фильтрации
+  filtering:
+    minImageAgeDays: 0
+    maxImageSizeMB: 50
+  
+  # Настройки сохранения
+  storage:
+    downloadDir: "downloads"
+    databasePath: "parser_data.db"
+  
+  # Настройки логирования
+  logging:
+    level: "INFO"
+    file: "parser.log"
+    maxFileSize: "100MB"
+    maxHistory: 30
+  
+  # Настройки Netty
+  netty:
+    maxConcurrentStreams: 1000
+    connectionPoolSize: 50
+    readTimeoutSeconds: 3
+    writeTimeoutSeconds: 2
+    connectTimeoutMs: 3000
+    maxChunkSize: 8192
+  
+  # Настройки базы данных
+  database:
+    maxConnections: 20
+    connectionTimeoutMs: 30000
+    idleTimeoutMs: 600000
+    maxLifetimeMs: 1800000
+
+# Конфигурация фотохостингов
+hostings:
+  imgbb:
+    name: "ru.imgbb.com"
+    baseUrl: "https://ru.imgbb.com"
+    tokenLength: 7
+    tokenChars: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    checkPath: "/"
+    downloadPath: "/"
+  
+  postimages:
+    name: "postimages.org"
+    baseUrl: "https://postimages.org"
+    tokenLength: 8
+    tokenChars: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    checkPath: "/ru/"
+    downloadPath: "/ru/"
+
+# Настройки мониторинга
+monitoring:
+  metrics:
+    enabled: true
+    port: 8080
+    path: "/metrics"
+  
+  health:
+    enabled: true
+    port: 8081
+    path: "/health"
